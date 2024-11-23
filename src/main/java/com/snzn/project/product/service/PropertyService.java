@@ -22,14 +22,19 @@ public class PropertyService {
 
     public PropertyListResponse listAll() {
         List<Property> propertyList = repository.findAll();
-        List<PropertyResponseModel> propertyModelList = new ArrayList<>();
+        List<PropertyResponseModel> propertyModelList = convertEntityToModel(propertyList);
 
+        return new PropertyListResponse(propertyModelList);
+    }
+
+    public static List<PropertyResponseModel> convertEntityToModel(List<Property> propertyList) {
+        List<PropertyResponseModel> propertyModelList = new ArrayList<>();
 
         for (Property property : propertyList) {
             propertyModelList.add(new PropertyResponseModel(property.getId(), property.getName()));
         }
 
-        return new PropertyListResponse(propertyModelList);
+        return propertyModelList;
     }
 
 }

@@ -2,7 +2,6 @@ package com.snzn.project.product.repository.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
@@ -20,23 +19,17 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 @Entity
-public class Product extends BaseEntity {
+public class Definition extends BaseEntity {
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(nullable = false)
     private Category category;
 
-    @Column(nullable = false)
-    private String name;
-
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable
-    private List<Property> property;
+    private List<Property> propertyList;
 
-    @Column(nullable = false)
-    private String brand;
-
-    @Column(nullable = false)
-    private String model;
+    @Column(nullable = false, unique = true, updatable = false)
+    private String name;
 
 }
