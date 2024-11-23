@@ -5,8 +5,10 @@ spring:
     url: jdbc:postgresql://localhost:5432/postgres
     password: mypass
     username: postgres
+    hikari:
+      schema: product
   jpa:
     hibernate:
       ddl-auto: create-drop
 server:
-  port: 8081
+  port: 8083
