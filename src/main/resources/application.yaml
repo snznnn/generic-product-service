@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: generic-product-service
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    password: mypass
+    username: postgres
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+server:
+  port: 8081
