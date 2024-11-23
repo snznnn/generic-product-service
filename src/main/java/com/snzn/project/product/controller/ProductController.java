@@ -6,4 +6,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/product")
 @RestController
 public class ProductController {
+    //test
 }
