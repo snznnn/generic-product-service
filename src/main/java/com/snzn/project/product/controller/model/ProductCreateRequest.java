@@ -26,6 +26,6 @@ public class ProductCreateRequest {
     private String model;
 
     @NotEmpty
-    private List<PropertyRequestModel> propertyValueList;
+    private List<ProductIdValueModel> propertyList;
 
 }

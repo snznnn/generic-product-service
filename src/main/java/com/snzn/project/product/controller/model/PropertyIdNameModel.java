@@ -9,11 +9,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PropertyRequestModel {
+public class PropertyIdNameModel {
 
     private Long id;
 
-    private String value;
+    private String name;
 
 }
 

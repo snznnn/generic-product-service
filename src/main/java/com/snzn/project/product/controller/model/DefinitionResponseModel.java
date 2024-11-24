@@ -19,6 +19,6 @@ public class DefinitionResponseModel {
 
     private String categoryName;
 
-    private List<PropertyResponseModel> propertyList;
+    private List<PropertyIdNameModel> propertyList;
 
 }

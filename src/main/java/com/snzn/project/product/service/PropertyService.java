@@ -1,9 +1,11 @@
 package com.snzn.project.product.service;
 
 import com.snzn.project.product.controller.model.PropertyListResponse;
-import com.snzn.project.product.controller.model.PropertyResponseModel;
+import com.snzn.project.product.controller.model.PropertyIdNameModel;
+import com.snzn.project.product.controller.model.PropertyNameValueModel;
 import com.snzn.project.product.repository.PropertyRepository;
 import com.snzn.project.product.repository.entity.Property;
+import com.snzn.project.product.repository.entity.PropertyValue;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,19 +24,29 @@ public class PropertyService {
 
     public PropertyListResponse listAll() {
         List<Property> propertyList = repository.findAll();
-        List<PropertyResponseModel> propertyModelList = convertPropertyEntityToModel(propertyList);
+        List<PropertyIdNameModel> propertyModelList = convertPropertyEntityToModel(propertyList);
 
         return new PropertyListResponse(propertyModelList);
     }
 
-    public static List<PropertyResponseModel> convertPropertyEntityToModel(List<Property> propertyList) {
-        List<PropertyResponseModel> propertyModelList = new ArrayList<>();
+    public static List<PropertyIdNameModel> convertPropertyEntityToModel(List<Property> propertyList) {
+        List<PropertyIdNameModel> propertyModelList = new ArrayList<>();
 
         for (Property property : propertyList) {
-            propertyModelList.add(new PropertyResponseModel(property.getId(), property.getName()));
+            propertyModelList.add(new PropertyIdNameModel(property.getId(), property.getName()));
         }
 
         return propertyModelList;
+    }
+
+    public static List<PropertyNameValueModel> convertPropertyValueEntityToModel(List<PropertyValue> propertyValueList) {
+        List<PropertyNameValueModel> propertyValueModelList = new ArrayList<>();
+
+        for (PropertyValue propertyValue : propertyValueList) {
+            propertyValueModelList.add(new PropertyNameValueModel(propertyValue.getProperty().getName(), propertyValue.getValue()));
+        }
+
+        return propertyValueModelList;
     }
 
 }

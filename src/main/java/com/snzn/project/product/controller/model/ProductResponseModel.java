@@ -11,8 +11,16 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PropertyListResponse {
+public class ProductResponseModel {
 
-    private List<PropertyIdNameModel> propertyList;
+    private String category;
+
+    private String definition;
+
+    private String brand;
+
+    private String model;
+
+    private List<PropertyNameValueModel> propertyList;
 
 }

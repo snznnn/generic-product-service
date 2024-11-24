@@ -5,14 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class PropertyListResponse {
+public class PropertyNameValueModel {
 
-    private List<PropertyIdNameModel> propertyList;
+    private String name;
+
+    private String value;
 
 }
+
