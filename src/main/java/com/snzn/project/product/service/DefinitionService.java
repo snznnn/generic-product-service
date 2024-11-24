@@ -38,7 +38,7 @@ public class DefinitionService {
         List<DefinitionResponseModel> definitionModelList = new ArrayList<>();
 
         for (Definition definition : definitionList) {
-            DefinitionResponseModel definitionModel = new DefinitionResponseModel(
+            var definitionModel = new DefinitionResponseModel(
                     definition.getId(),
                     definition.getName(),
                     definition.getCategory().getName(),

@@ -16,4 +16,3 @@ public class PropertyNameValueModel {
     private String value;
 
 }
-

@@ -16,4 +16,3 @@ public class PropertyIdNameModel {
     private String name;
 
 }
-
