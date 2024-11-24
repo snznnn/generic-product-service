@@ -18,7 +18,6 @@ import java.util.List;
 public class DefinitionService {
 
     private final DefinitionRepository definitionRepository;
-
     private final CategoryRepository categoryRepository;
     private final PropertyRepository propertyRepository;
 
@@ -43,7 +42,7 @@ public class DefinitionService {
                     definition.getId(),
                     definition.getName(),
                     definition.getCategory().getName(),
-                    PropertyService.convertEntityToModel(definition.getPropertyList())
+                    PropertyService.convertPropertyEntityToModel(definition.getPropertyList())
             );
             definitionModelList.add(definitionModel);
         }

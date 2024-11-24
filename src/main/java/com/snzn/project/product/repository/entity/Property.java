@@ -19,4 +19,3 @@ public class Property extends BaseEntity {
     private String name;
 
 }
-

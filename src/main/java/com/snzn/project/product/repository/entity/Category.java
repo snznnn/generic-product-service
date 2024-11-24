@@ -19,4 +19,3 @@ public class Category extends BaseEntity {
     private String name;
 
 }
-

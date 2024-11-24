@@ -14,15 +14,18 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DefinitionCreateRequest {
-
-    @NotBlank
-    private String name;
+public class ProductCreateRequest {
 
     @NotNull
-    private Long categoryId;
+    private Long definitionId;
+
+    @NotBlank
+    private String brand;
+
+    @NotBlank
+    private String model;
 
     @NotEmpty
-    private List<Long> propertyIdList;
+    private List<PropertyRequestModel> propertyValueList;
 
 }
