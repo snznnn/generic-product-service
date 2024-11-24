@@ -1,8 +1,8 @@
 package com.snzn.project.product.controller;
 
-import com.snzn.project.product.controller.model.ProductCreateRequest;
-import com.snzn.project.product.controller.model.ProductListResponse;
-import com.snzn.project.product.service.ProductService;
+import com.snzn.project.product.controller.model.DefinitionCreateRequest;
+import com.snzn.project.product.controller.model.DefinitionListResponse;
+import com.snzn.project.product.service.DefinitionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,20 +16,20 @@ import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
 @RequiredArgsConstructor
-@RequestMapping("/entity")
+@RequestMapping("/definition")
 @RestController
-public class ProductController {
+public class DefinitionController {
 
-    private final ProductService service;
+    private final DefinitionService service;
 
     @PostMapping("/create")
-    public ResponseEntity<Void> create(@RequestBody @Valid ProductCreateRequest request) {
+    public ResponseEntity<Void> create(@RequestBody @Valid DefinitionCreateRequest request) {
         service.create(request);
         return new ResponseEntity<>(CREATED);
     }
 
     @GetMapping("/list-all")
-    public ResponseEntity<ProductListResponse> listAll() {
+    public ResponseEntity<DefinitionListResponse> listAll() {
         return new ResponseEntity<>(service.listAll(), OK);
     }
 

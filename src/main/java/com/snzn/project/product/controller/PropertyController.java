@@ -1,8 +1,8 @@
 package com.snzn.project.product.controller;
 
-import com.snzn.project.product.controller.model.ProductCreateRequest;
-import com.snzn.project.product.controller.model.ProductListResponse;
-import com.snzn.project.product.service.ProductService;
+import com.snzn.project.product.controller.model.PropertyCreateRequest;
+import com.snzn.project.product.controller.model.PropertyListResponse;
+import com.snzn.project.product.service.PropertyService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -16,20 +16,20 @@ import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.HttpStatus.OK;
 
 @RequiredArgsConstructor
-@RequestMapping("/entity")
+@RequestMapping("/property")
 @RestController
-public class ProductController {
+public class PropertyController {
 
-    private final ProductService service;
+    private final PropertyService service;
 
     @PostMapping("/create")
-    public ResponseEntity<Void> create(@RequestBody @Valid ProductCreateRequest request) {
-        service.create(request);
+    public ResponseEntity<Void> create(@RequestBody @Valid PropertyCreateRequest request) {
+        service.create(request.getName());
         return new ResponseEntity<>(CREATED);
     }
 
     @GetMapping("/list-all")
-    public ResponseEntity<ProductListResponse> listAll() {
+    public ResponseEntity<PropertyListResponse> listAll() {
         return new ResponseEntity<>(service.listAll(), OK);
     }
 
