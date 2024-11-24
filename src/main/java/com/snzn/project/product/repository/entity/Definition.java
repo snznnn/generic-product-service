@@ -6,7 +6,6 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -16,13 +15,13 @@ import java.util.List;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 public class Definition extends BaseEntity {
 
     @ManyToOne
-    @JoinColumn(nullable = false)
+    @JoinColumn
     private Category category;
 
     @ManyToMany
