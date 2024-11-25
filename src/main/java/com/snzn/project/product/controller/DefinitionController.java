@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.HttpStatus.*;
@@ -35,9 +36,9 @@ public class DefinitionController {
         return new ResponseEntity<>(NO_CONTENT);
     }
 
-    @GetMapping("/list-all")
-    public ResponseEntity<DefinitionListResponse> listAll() {
-        return new ResponseEntity<>(service.listAll(), OK);
+    @GetMapping("/list")
+    public ResponseEntity<DefinitionListResponse> list(@RequestParam(required = false) Long categoryId) {
+        return new ResponseEntity<>(service.list(categoryId), OK);
     }
 
 }

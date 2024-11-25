@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.Objects.isNull;
+
 @RequiredArgsConstructor
 @Service
 public class DefinitionService {
@@ -49,8 +51,15 @@ public class DefinitionService {
         }
     }
 
-    public DefinitionListResponse listAll() {
-        List<Definition> definitionList = definitionRepository.findByDeletedFalse();
+    public DefinitionListResponse list(Long categoryId) {
+        List<Definition> definitionList = new ArrayList<>();
+
+        if (isNull(categoryId)) {
+            definitionList = definitionRepository.findByDeletedFalse();
+        } else {
+            definitionList = definitionRepository.findByCategoryIdAndDeletedFalse(categoryId);
+        }
+
         List<DefinitionResponseModel> definitionModelList = new ArrayList<>();
 
         for (Definition definition : definitionList) {

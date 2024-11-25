@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import static org.springframework.http.HttpStatus.*;
@@ -43,9 +44,9 @@ public class ProductController {
         return new ResponseEntity<>(NO_CONTENT);
     }
 
-    @GetMapping("/list-all")
-    public ResponseEntity<ProductListResponse> listAll() {
-        return new ResponseEntity<>(service.listAll(), OK);
+    @GetMapping("/list")
+    public ResponseEntity<ProductListResponse> list(@RequestParam(required = false) Long definitionId) {
+        return new ResponseEntity<>(service.list(definitionId), OK);
     }
 
 }

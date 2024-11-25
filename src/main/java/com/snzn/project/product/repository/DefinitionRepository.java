@@ -14,4 +14,6 @@ public interface DefinitionRepository extends JpaRepository<Definition, Long> {
 
     List<Definition> findByDeletedFalse();
 
+    List<Definition> findByCategoryIdAndDeletedFalse(Long categoryId);
+
 }

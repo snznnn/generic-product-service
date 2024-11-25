@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static java.util.Objects.isNull;
+
 @RequiredArgsConstructor
 @Service
 public class ProductService {
@@ -97,8 +99,15 @@ public class ProductService {
         }
     }
 
-    public ProductListResponse listAll() {
-        List<Product> productList = productRepository.findByDeletedFalse();
+    public ProductListResponse list(Long definitionId) {
+        List<Product> productList;
+
+        if (isNull(definitionId)) {
+            productList = productRepository.findByDeletedFalse();
+        } else {
+            productList = productRepository.findByDefinitionIdAndDeletedFalse(definitionId);
+        }
+
         List<ProductResponseModel> productModelList = new ArrayList<>();
 
         for (Product product : productList) {
