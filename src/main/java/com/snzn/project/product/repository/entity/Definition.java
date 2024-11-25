@@ -28,7 +28,7 @@ public class Definition extends BaseEntity {
     @JoinTable
     private List<Property> propertyList;
 
-    @Column(nullable = false, unique = true, updatable = false)
+    @Column(nullable = false, updatable = false)
     private String name;
 
 }

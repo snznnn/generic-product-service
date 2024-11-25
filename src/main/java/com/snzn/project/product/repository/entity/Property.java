@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Entity
 public class Property extends BaseEntity {
 
-    @Column(nullable = false, unique = true, updatable = false)
+    @Column(nullable = false, updatable = false)
     private String name;
 
 }

@@ -7,11 +7,13 @@ import com.snzn.project.product.repository.CategoryRepository;
 import com.snzn.project.product.repository.DefinitionRepository;
 import com.snzn.project.product.repository.PropertyRepository;
 import com.snzn.project.product.repository.entity.Definition;
+import com.snzn.project.product.service.exception.DuplicateRecordException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -25,6 +27,11 @@ public class DefinitionService {
         var categoryReference = categoryRepository.getReferenceById(request.getCategoryId());
         var propertyReferenceList = request.getPropertyIdList().stream().map(propertyRepository::getReferenceById).toList();
 
+        Optional<Definition> optDefinition = definitionRepository.findByNameAndDeletedFalse(request.getName());
+        if (optDefinition.isPresent()) {
+            throw new DuplicateRecordException();
+        }
+
         var definition = new Definition(
                 categoryReference,
                 propertyReferenceList,
@@ -33,8 +40,17 @@ public class DefinitionService {
         definitionRepository.save(definition);
     }
 
+    public void softDelete(Long id) {
+        Optional<Definition> optDefinition = definitionRepository.findById(id);
+        if (optDefinition.isPresent()) {
+            Definition definition = optDefinition.get();
+            definition.softDelete();
+            definitionRepository.save(definition);
+        }
+    }
+
     public DefinitionListResponse listAll() {
-        List<Definition> definitionList = definitionRepository.findAll();
+        List<Definition> definitionList = definitionRepository.findByDeletedFalse();
         List<DefinitionResponseModel> definitionModelList = new ArrayList<>();
 
         for (Definition definition : definitionList) {

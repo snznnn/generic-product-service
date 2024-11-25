@@ -4,6 +4,7 @@ import com.snzn.project.product.controller.model.ProductCreateRequest;
 import com.snzn.project.product.controller.model.ProductIdValueModel;
 import com.snzn.project.product.controller.model.ProductListResponse;
 import com.snzn.project.product.controller.model.ProductResponseModel;
+import com.snzn.project.product.controller.model.ProductUpdateRequest;
 import com.snzn.project.product.repository.DefinitionRepository;
 import com.snzn.project.product.repository.ProductRepository;
 import com.snzn.project.product.repository.PropertyRepository;
@@ -12,12 +13,15 @@ import com.snzn.project.product.repository.entity.Definition;
 import com.snzn.project.product.repository.entity.Product;
 import com.snzn.project.product.repository.entity.Property;
 import com.snzn.project.product.repository.entity.PropertyValue;
+import com.snzn.project.product.service.exception.DuplicateRecordException;
+import com.snzn.project.product.service.exception.RecordNotFoundException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -30,36 +34,71 @@ public class ProductService {
 
     @Transactional
     public void create(ProductCreateRequest request) {
-        var definitionReference = definitionRepository.getReferenceById(request.getDefinitionId());
+        Optional<Definition> optDefinition = definitionRepository.findById(request.getDefinitionId());
+        if (optDefinition.isEmpty()) {
+            throw new RecordNotFoundException();
+        }
+        Definition definition = optDefinition.get();
+
+        Optional<Product> optCategory = productRepository.findByDefinitionAndBrandAndModel(definition, request.getBrand(), request.getModel());
+        if (optCategory.isPresent()) {
+            throw new DuplicateRecordException();
+        }
 
         var product = new Product(
-                definitionReference,
+                definition,
                 request.getBrand(),
                 request.getModel());
         productRepository.save(product);
 
-        List<PropertyValue> propertyValueList = convertPropertyValueModelToEntity(product, request.getPropertyList());
+        List<PropertyValue> propertyValueList = convertPropertyValueModelToEntity(definition, product, request.getPropertyList());
         propertyValueRepository.saveAll(propertyValueList);
     }
 
-    private List<PropertyValue> convertPropertyValueModelToEntity(Product product, List<ProductIdValueModel> propertyValueModelList) {
+    @Transactional
+    public void update(ProductUpdateRequest request) {
+        Optional<Product> optProduct = productRepository.findByIdAndDeletedFalse(request.getProductId());
+        if (optProduct.isEmpty()) {
+            throw new RecordNotFoundException();
+        } else {
+            Product product = optProduct.get();
+            propertyValueRepository.deleteAllByProduct(product);
+
+            List<PropertyValue> propertyValueList = convertPropertyValueModelToEntity(product.getDefinition(), product, request.getPropertyList());
+            propertyValueRepository.saveAll(propertyValueList);
+        }
+    }
+
+    private List<PropertyValue> convertPropertyValueModelToEntity(Definition definition, Product product, List<ProductIdValueModel> propertyValueModelList) {
         List<PropertyValue> propertyValueList = new ArrayList<>();
 
         for (ProductIdValueModel propertyValueModel : propertyValueModelList) {
-            propertyValueList.add(
-                    new PropertyValue(
-                            product,
-                            propertyRepository.getReferenceById(propertyValueModel.getId()),
-                            propertyValueModel.getValue()
-                    )
-            );
+            List<Long> propertyIdList = definition.getPropertyList().stream().map(Property::getId).toList();
+            if (propertyIdList.contains(propertyValueModel.getId())) {
+                propertyValueList.add(
+                        new PropertyValue(
+                                product,
+                                propertyRepository.getReferenceById(propertyValueModel.getId()),
+                                propertyValueModel.getValue()
+                        )
+                );
+            }
         }
 
         return propertyValueList;
     }
 
+    public void softDelete(Long id) {
+        Optional<Product> optProduct = productRepository.findById(id);
+        if (optProduct.isPresent()) {
+            Product product = optProduct.get();
+            product.softDelete();
+            productRepository.save(product);
+        }
+    }
+
     public ProductListResponse listAll() {
-        List<Product> productList  = productRepository.findAll();
+        List<Product> productList = productRepository.findByDeletedFalse();
         List<ProductResponseModel> productModelList = new ArrayList<>();
 
         for (Product product : productList) {
@@ -67,6 +106,7 @@ public class ProductService {
             List<PropertyValue> propertyValueList = propertyValueRepository.findByProduct(product);
 
             ProductResponseModel productModel = new ProductResponseModel(
+                    product.getId(),
                     definition.getCategory().getName(),
                     definition.getName(),
                     product.getBrand(),
@@ -78,5 +118,6 @@ public class ProductService {
 
         return new ProductListResponse(productModelList);
     }
+
 
 }
