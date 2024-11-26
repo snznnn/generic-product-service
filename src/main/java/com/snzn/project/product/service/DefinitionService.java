@@ -52,7 +52,7 @@ public class DefinitionService {
     }
 
     public DefinitionListResponse list(Long categoryId) {
-        List<Definition> definitionList = new ArrayList<>();
+        List<Definition> definitionList;
 
         if (isNull(categoryId)) {
             definitionList = definitionRepository.findByDeletedFalse();

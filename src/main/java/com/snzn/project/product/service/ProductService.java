@@ -73,9 +73,9 @@ public class ProductService {
 
     private List<PropertyValue> convertPropertyValueModelToEntity(Definition definition, Product product, List<ProductIdValueModel> propertyValueModelList) {
         List<PropertyValue> propertyValueList = new ArrayList<>();
+        List<Long> propertyIdList = definition.getPropertyList().stream().map(Property::getId).toList();
 
         for (ProductIdValueModel propertyValueModel : propertyValueModelList) {
-            List<Long> propertyIdList = definition.getPropertyList().stream().map(Property::getId).toList();
             if (propertyIdList.contains(propertyValueModel.getId())) {
                 propertyValueList.add(
                         new PropertyValue(
