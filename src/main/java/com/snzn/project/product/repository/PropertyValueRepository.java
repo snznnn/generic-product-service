@@ -12,4 +12,6 @@ public interface PropertyValueRepository extends JpaRepository<PropertyValue, Lo
 
     List<PropertyValue> findByProduct(Product product);
 
+    void deleteAllByProduct(Product productId);
+
 }
