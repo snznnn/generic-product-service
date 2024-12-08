@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"product_id", "property", "value"}))
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"product_id", "property_id", "value"}))
 @Entity
 public class PropertyValue extends BaseEntity {
 
